@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script> -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+<script src="https://rawgit.com/rzajac/angularjs-slider/master/dist/rzslider.js"></script>
+<script>
+var myApp = angular.module('myapp', ['rzSlider']);
+
+myApp.controller('TestController', TestController);
+
+function TestController() {
+    var vm = this;
+
+    vm.priceSlider = {
+        value: 200,
+        options: {
+            floor: 0,
+            ceil: 500
+        }
+    }
+}
+
+</script>
+<body>
+
+    <div ng-app="myapp">
+        <div ng-controller="TestController as vm">
+            <p>Price: {{vm.priceSlider.value}}</p>
+            <rzslider rz-slider-model="vm.priceSlider.value" rz-slider-options="vm.priceSlider.options"></rzslider>
+        </div>
+    </div>
+</body>
+</html>

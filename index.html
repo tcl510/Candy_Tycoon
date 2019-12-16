@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8" />
+        <meta name="keywords" content="Yorkshire, Yorkshire mus, roman, tombstones, roman tombstones">
+        <title>
+            Candy tycoon
+        </title>
+
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="drawer.css">
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+
+        <script src="load.js"></script>
+        <script src="Calc_to_ui.js"></script>
+        <script>
+
+        </script>
+
+        <style>
+            body {
+                background: linear-gradient(120deg, #22333b, #eae0d5, #c6ac8f, #5e503f);
+background-size: 800% 800%;
+
+-webkit-animation: AnimationName 40s ease infinite;
+-moz-animation: AnimationName 40s ease infinite;
+animation: AnimationName 40s ease infinite;
+
+@-webkit-keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+@-moz-keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+@keyframes AnimationName {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                grid-template-rows: 1fr 1fr 1fr;
+            }
+
+            .menu {
+                display: grid;
+                grid-area: 2/2/2/2;
+                grid-gap: 20px;
+            }
+
+            .new_game {
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+                border-bottom-right-radius: 10px;
+            }
+
+            .save_warpper {
+                background-color: green;
+            }
+
+            .save_files {
+                margin-left: 10px;
+                margin-right: 10px;
+                margin-bottom: 5px;
+
+            }
+        </style>
+    </head>
+
+    <body data-ng-app="list_saves" data-ng-controller="get_saves">
+
+        <div class="menu">
+
+            <div class="new_game title_block button" onclick="newgame()">New Game
+                <form id="frm1" style="visibility:hidden">
+                    Name: <input id="myText2" type="text" name="lname" value="default">
+                    <input type="button" onclick="myFunction()" value="Submit">
+                </form>
+            </div>
+
+            <div class="load_games">
+                <div class="upgrades_title title_block button">
+                    <div class="title_bar_element element2"></div>
+                    <div class="title_bar_element element1 title">Saves</div>
+                    <div class="title_bar_element icon icon2 glyphicon glyphicon-menu-down element3"></div>
+                </div>
+                <div class="save_wrapper">
+                    <div class="save_files button" data-ng-repeat="profile in profiles" data-ng-click="load(profile)">
+                        <div class="upgrade_name title_block button">
+                            {{profile.name}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+    </body>
+
+
+</html>

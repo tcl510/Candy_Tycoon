@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<!--	house keeping-->
+		<meta charset="utf-8" />
+		<meta name="keywords" content="Yorkshire, Yorkshire mus, roman, tombstones, roman tombstones">
+		<title>
+			Candy tycoon
+		</title>
+
+		<!--style sheets-->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="drawer.css">
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+		<!--Scripts-->
+		<!-- <script src="angular-1.7.8/angular.min.js"></script> -->
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+		<!--my scripts-->
+		<script src="Calc_to_ui.js"></script>
+
+		<script>
+			$(document).ready(function() {});
+		</script>
+
+		<!--	manual styling-->
+		<style>
+			body {
+				display: grid;
+				grid-template-rows: auto;
+				grid-template-columns: 33% 33% 33%;
+				grid-template-areas:
+					"banner banner banner"
+					"column1 column2 column3";
+						
+				background: #eae0d5;
+			}
+
+
+			#column1 {
+				grid-area: column1;
+
+			}
+
+			#column2 {
+				grid-area: column2;
+
+			}
+
+			#column3 {
+				grid-area: column3;
+
+			}
+
+			#banner {
+				grid-area: banner;
+
+			}
+
+			#column {}
+		</style>
+
+	</head>
+
+	<body ng-app="name_updater" ng-controller="get_names">
+		<h1 id="banner" onClick="add1">banner{{money|currency:'$'}}</h1><!-- onClick="addtolist()" -->
+		<div class="column" id="column1">
+
+
+			<ul class="unlock_list" style="list-style: none">
+				<li class="unlock_block" ng-repeat="x in candies" ng-style="{'visibility': x.unlock_visibility?'visible':'hidden'}">
+					<div class="unlock_list">
+						<div class="unlock_block_item">Research {{x.name}} {{x.unlock_cost|currency:'$'}}</div>
+						<!-- <span class="icon icon2 glyphicon glyphicon-menu-down"></span> -->
+					</div>
+				</li>
+			</ul>
+
+
+			<div class="production_list">
+				<div class="title_block" onClick="shrink(this)">
+					<div class="title_bar amount"></div>
+					<div class="title_bar title">Candy production</div>
+					<span class="icon icon2 glyphicon glyphicon-menu-down"></span>
+				</div>
+				<ul class="column_list">
+					<li class="drawer" ng-repeat="x in candies" ng-style="{'visibility': x.visibility?'visible':'hidden'}">
+
+						<div class="list_wrapper" id="list_template">
+							<div class="title_block" onClick="shrink(this)">
+								<div class="title_bar amount">{{x.amount|currency:''}}{{x.unit}}</div>
+								<div class="title_bar title">{{x.name}}</div>
+								<span class="icon icon2 glyphicon glyphicon-menu-down"></span>
+							</div>
+
+							<ul class="list">
+								<li class="list_item price_per_gram">Price per gram: {{x.price_per_gram| currency:'$'}}
+								</li>
+								<li class="list_item amount">Current amount: {{x.amount| number : 1.2}}{{x.unit}}</li>
+								<li class="list_item factory">
+									<ul class="factory_list">
+										<li class="factory_list_item factory_amount">
+											Factories:
+											{{x.factory_amount}}</li>
+										<li class="factory_list_item production">
+											Producing:
+											{{x.factory.production * x.factory_amount|currency:''}}{{x.unit}}&#47;s
+										</li>
+										<li class="factory_list_item until_next_factory">
+											till next factory
+
+										</li>
+										<li class="factory_list_item next_cost_per">Cost
+											of next
+											factory&#58;<br>
+											{{x.factory.base_cost_per * (x.factory_amount +1) * x.factory.price_multiplier| currency:'$'}}
+										</li>
+										<li class="factory_list_item purchase_buttons"
+										    ng-click="purchase_factory(x)">buttons</li>
+									</ul>
+								</li>
+							</ul>
+
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="column" id="column2">
+			<ul class="column_list">
+				<li>
+					<div class="list_wrapper" id="list2">
+						<div class="title_block" ng-click="sellall()">
+							<span class="icon icon1 ui-icon ui-icon-disk"></span>
+							<div class="title">title</div>
+							<span class="icon icon2 glyphicon glyphicon-menu-down"></span>
+						</div>
+						<ul class="list">
+							<li class="list_item">1</li>
+							<li class="list_item">2</li>
+							<li class="list_item">3</li>
+							<li class="list_item">4</li>
+						</ul>
+
+					</div>
+				</li>
+
+			</ul>
+		</div>
+		<div class="column" id="column3">
+			<ul class="column_list">
+				<li>
+					<div class="list_wrapper" id="list3">
+						<div class="list_wrapper" id="list2">
+							<div class="title_block" onClick="shrink(this)" ng-click="manualsave()">
+								<span class="icon icon1 ui-icon ui-icon-disk"></span>
+								<div class="title">title</div>
+								<span class="icon icon2 glyphicon glyphicon-menu-down"></span>
+							</div>
+							<ul class="list">
+								<li class="list_item">1</li>
+								<li class="list_item">2</li>
+								<li class="list_item">3</li>
+								<li class="list_item">4</li>
+							</ul>
+						</div>
+				</li>
+			</ul>
+		</div>
+
+
+	</body>
+
+</html>

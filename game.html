@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<!--	house keepingg-->
+		<meta charset="utf-8" />
+		<meta name="keywords" content="Candy_tycoon">
+		<title>
+			Candy tycoon
+		</title>
+
+		<!--style sheets-->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="drawer.css">
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+		<!--Scripts-->
+		<!-- <script src="angular-1.7.8/angular.min.js"></script> -->
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+		<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+
+
+		<!--my scripts-->
+		<!-- <script src="load.js"></script> -->
+		<script src="Calc_to_ui.js"></script>
+
+		<script>
+			$(document).ready(function() {});
+		</script>
+
+		<!--	manual styling -->
+		<style>
+			body {
+				/* display: grid;
+				grid-template-rows: auto;
+				grid-template-columns: 40% 60%;
+				width: 100%;
+				max-width: 1500px;
+				margin:5% auto;
+				grid-template-areas:
+					"banner banner"
+					"column1 column2"
+					"column1 column2";
+				grid-row-gap: 10px; */
+				/* justify-content: center; */
+				/* background: #eae0d5; */
+			}
+
+
+
+
+			/* #column2 {
+				grid-area: column2;
+
+			} */
+
+			/* #column3 {
+				grid-area: column3;
+
+			} */
+
+			#banner {
+				grid-area: banner;
+
+			}
+
+			#column {}
+
+		</style>
+
+	</head>
+
+	<body data-ng-app="Candy_tycoon" data-ng-controller="get_names">
+		<h1 id="banner" onClick="add1">Welcome to Candy Tycoon {{name}}</h1>
+
+		<div class="column1" id="column1">
+
+			<div id="production" style="position:relative">
+				<!-- //title bar -->
+				<div class="production_title title_block button bar" onClick="shrink(this)">
+					<div class="title_bar_element title element1">Candy production</div>
+					<div class="title_bar_element  amount element2"></div>
+					<span class="title_bar_element icon icon2 glyphicon glyphicon-menu-down element3"></span>
+				</div>
+				<!-- //list wrapper -->
+				<div id="candy_list">
+					<div id="unlocks">
+						<div class="unlock_list_item" data-ng-repeat="x in candies" data-ng-style="{'display': x.unlock_visibility?'grid':'none'}">
+							<div class="unlock_list_item_title title_block button bar" data-ng-click="unlock(x)">
+								<div class="title_bar_element title element1">Research {{x.name}}
+									{{x.unlock_cost|money}}</div>
+								<div class="title_bar_element amount element2"></div>
+								<span class="title_bar_element icon icon2 glyphicon glyphicon-menu-down element3"></span>
+							</div>
+						</div>
+					</div>
+					<!-- //list item -->
+					<div class="list_item candy_list_item" data-ng-repeat="x in candies" data-ng-style="{'display': x.visibility?'grid':'none'}">
+						<!-- //list title with button -->
+						<div class="candy_list_item_title title_block button bar" onClick="shrink(this)">
+							<div class="title_bar_element title element1">{{x.name}}</div>
+							<div class="title_bar_element amount element2">{{x.amount|weight}}</div>
+							<span class="title_bar_element icon icon1 glyphicon glyphicon-alert element4" data-ng-style="{'display': ((x.production * x.factory_amount)>x.deduction)? 'none':'grid'}"></span>
+							<span class="title_bar_element icon icon2 glyphicon glyphicon-menu-down element3"></span>
+						</div>
+						<!-- //inner candy info list -->
+						<div class="list candy_list_item_list candy_info_list">
+							<div class="candy_info_list_item price_per_gram">
+								Price per gram&#58; {{x.price_per_gram| money}}
+							</div>
+
+							<div class="factory_drawer">
+
+								<div class="candy_info_list_item factory_info title_block button" onClick="shrink(this)">
+									Factories&#58; {{x.factory_amount}}
+								</div>
+
+								<div class="list factory_info_list">
+									<div class="factory_info_list_item button_bar button"
+									    data-ng-click="purchase_factory(x)">
+										<div
+										    class="factory_info_list_item_item base_production">
+											&#43;{{x.production | weight}}
+										</div>
+										<div
+										    class="factory_info_list_item_item next_cost">
+											Purchase
+											factory&#40;{{x.factory.base_cost_per * (x.factory_amount +1) * x.factory.price_multiplier| money}}&#41;
+										</div>
+									</div>
+
+									<div class="streamline_upgrades">
+										<div
+										    class="streamline_upgrades_item streamline_title">
+											Steamline
+										</div>
+
+										<div class="streamline_data_item data_producing">
+											Producing&#58;{{x.production * x.factory_amount | weight}}&#47;s
+										</div>
+										<div class="streamline_data_item data_selling">
+											Selling&#58;
+											{{x.deduction| weight}}&#47;s
+										</div>
+
+										<div class="streamline_upgrade_button title_block button"
+										    data-ng-click="unlock_optimisation(x, 0)"
+										    data-ng-style="{'display': x.optimisations[0].unlocked?'none':''}">
+											{{x.optimisations[0].price | money}}
+											upgrade your production by
+											+{{(x.optimisations[0].multiplier - 1) * 100 | number: 0}}%
+										</div>
+										<div class="streamline_upgrade_button1 title_block button"
+										    data-ng-click="unlock_optimisation(x, 1)"
+										    data-ng-style="{'display': x.optimisations[1].unlocked?'none':''}">
+											{{x.optimisations[1].price | money}}
+											upgrade your production by
+											+{{(x.optimisations[1].multiplier - 1) * 100 | number: 0}}%
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="column2" id="column2">
+			<div id="information">
+				<div id="information_title">Information
+				</div>
+
+				<div id="information_chart" style="height: 340px; width: 100%;">chart</div>
+				<div id="information_balance">
+					<div id="balance">
+						Balance:
+						<br>
+						{{money|money}}
+					</div>
+					<div id="total">
+						Money Earned:
+						<br>
+						{{total_money|money}}
+					</div>
+				</div>
+				<div id="information_news">news</div>
+				<div class="shop_buy button" id="shop_buy" data-ng-click="new_shop()">
+					<div class="shop_total_volume"></div>
+					<div class="shop_buy_next">buy next shop {{next_shop_price|money}}</div>
+				</div>
+			</div>
+
+
+			<div id="shops">
+
+
+
+				<div class="shop" data-ng-repeat="shop in shop_list">
+
+					<div class="shop_title title_block button" onclick="shrink(this)">
+						<div class="title_bar_element element2">{{shop.money_per_second | money}}/s</div>
+						<div class="title_bar_element element1 title">{{shop.name}} {{shop.selected_product.name}}</div>
+						<div class="title_bar_element icon icon2 glyphicon glyphicon-menu-down element3"></div>
+					</div>
+
+					<div class="shop_inside">
+
+						<div class="main_product_selector">
+							<div class="main_product">
+								main product: {{shop.selected_product.name}}
+							</div>
+							<!-- <select class="selector">
+								<option value="enabled_names">enabled_names</option> -->
+
+							<select class="selector" data-ng-options="x.name for x in candies |filter:{visibility:true}"
+							    data-ng-model="shop.selected_product">
+							</select>
+						</div>
+
+						<div class="product_scale">
+							<div class="volume_per_second">
+								{{shop.selected_product_ratio}}%
+								{{shop.volume_actual/100 * shop.selected_product_ratio|weight}}of your
+								{{shop.volume_actual|weight}} per second
+							</div>
+							<div class="slider">
+								<input type="range" min="0" max="100" value="50" class="slider"
+								    data-ng-model="shop.selected_product_ratio">
+							</div>
+						</div>
+
+						<div class="optimisations">
+							<div class="upgrades_title title_block button" onclick="shrink(this)">
+								<div class="title_bar_element element2"></div>
+								<div class="title_bar_element element1 title">unlocks +{{(shop.volume_multi - 1) * 100| number:0}}% volume +{{(shop.margin_multi - 1) * 100 | number:0}}% margin</div>
+								<div class="title_bar_element icon icon2 glyphicon glyphicon-menu-down element3"></div>
+							</div>
+
+							<div class="upgrades button" data-ng-repeat="upgrade in shop.upgrades| filter:{unlocked: false}"
+							    data-ng-click="$parent.upgrade(shop, upgrade)">
+								<div class="upgrade_name title_block button">{{upgrade.synopsis}} {{upgrade.name}}
+									{{upgrade.price|money}}
+							</div>
+								<!-- <div class="upgrade_price"></div> -->
+								<!-- <div class="tooltip">Hover over me
+
+								</div> -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
